@@ -1,13 +1,13 @@
 {
-  "version": "1.8.0",
+  "version": "1.9.0",
   "apkParts": [
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part1.b64",
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part2.b64",
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part3.b64",
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part4.b64",
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part5.b64",
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part6.b64",
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part7.b64",
-    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.8.part8.b64"
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part1.b64",
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part2.b64",
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part3.b64",
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part4.b64",
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part5.b64",
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part6.b64",
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part7.b64",
+    "https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android-v1.9.part8.b64"
   ]
 }
