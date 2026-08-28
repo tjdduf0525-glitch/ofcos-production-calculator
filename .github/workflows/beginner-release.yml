@@ -48,7 +48,10 @@ jobs:
           gh release download v2.1.0 --pattern 'production-calculator-setup-2.1.0.exe' --dir beginner
           Move-Item 'beginner/production-calculator-setup-2.1.0.exe' 'beginner/production-calculator-intermediate-PC-2.1.0.exe'
           gh release delete downloads-current --yes --cleanup-tag 2>$null
-          if ($LASTEXITCODE -ne 0) { Write-Host '기존 통합 다운로드가 없어 새로 만듭니다.' }
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host '기존 통합 다운로드가 없어 새로 만듭니다.'
+            $global:LASTEXITCODE = 0
+          }
       - name: Publish unified download page
         uses: softprops/action-gh-release@v2
         with:
