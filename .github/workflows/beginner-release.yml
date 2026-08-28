@@ -1,0 +1,56 @@
+name: Publish beginner downloads
+
+on:
+  push:
+    branches: [main]
+    paths: ['beginner/**', '.github/workflows/beginner-release.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: '8.7' }
+      - name: Restore exact OFCOS icon
+        shell: pwsh
+        run: |
+          $png=[Convert]::FromBase64String((Get-Content 'desktop/app/assets/app-icon.png.b64' -Raw))
+          $ico=[Convert]::FromBase64String((Get-Content 'desktop/build/app-icon.ico.b64' -Raw))
+          $rcedit=(1..4 | ForEach-Object { Get-Content "desktop/build/rcedit.part$_.b64" -Raw }) -join ''
+          [IO.File]::WriteAllBytes('beginner/desktop/app/assets/app-icon.png',$png)
+          [IO.File]::WriteAllBytes('beginner/desktop/build/app-icon.ico',$ico)
+          [IO.File]::WriteAllBytes('beginner/desktop/build/rcedit-x64.exe',[Convert]::FromBase64String($rcedit))
+          [IO.File]::WriteAllBytes('beginner/android/app/src/main/res/drawable/app_icon.png',$png)
+      - name: Build beginner Windows app
+        working-directory: beginner/desktop
+        run: npm install && npm run build
+      - name: Build beginner Android app
+        working-directory: beginner/android
+        run: gradle --no-daemon assembleDebug
+      - name: Prepare public files
+        shell: pwsh
+        run: |
+          Copy-Item 'beginner/desktop/dist/생산계산기-초급자용-PC-1.0.0.exe' 'beginner/production-calculator-beginner-PC-1.0.0.exe'
+          Copy-Item 'beginner/android/app/build/outputs/apk/debug/app-debug.apk' 'beginner/production-calculator-beginner-Android-1.0.0.apk'
+      - name: Publish beginner download page
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: beginner-v1.0.0
+          name: 생산계산기 초급자용 v1.0
+          make_latest: false
+          body: |
+            초급자용 생산계산기 다운로드입니다.
+            - PC: EXE 파일
+            - 갤럭시/안드로이드: APK 파일
+          files: |
+            beginner/production-calculator-beginner-PC-1.0.0.exe
+            beginner/production-calculator-beginner-Android-1.0.0.apk
+
