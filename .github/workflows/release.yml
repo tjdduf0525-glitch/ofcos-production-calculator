@@ -1,0 +1,45 @@
+name: Build and publish Windows update
+
+on:
+  push:
+    branches: [main]
+    paths: ['desktop/**', '.github/workflows/release.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Restore exact OFCOS icon files
+        shell: pwsh
+        run: |
+          [IO.File]::WriteAllBytes('desktop/build/app-icon.ico',[Convert]::FromBase64String((Get-Content 'desktop/build/app-icon.ico.b64' -Raw)))
+          [IO.File]::WriteAllBytes('desktop/app/assets/app-icon.png',[Convert]::FromBase64String((Get-Content 'desktop/app/assets/app-icon.png.b64' -Raw)))
+          [IO.File]::WriteAllBytes('desktop/build/rcedit-x64.exe',[Convert]::FromBase64String((Get-Content 'desktop/build/rcedit-x64.exe.b64' -Raw)))
+      - name: Install packages
+        working-directory: desktop
+        run: npm install
+      - name: Build Windows installer
+        working-directory: desktop
+        run: npm run build
+      - name: Read version
+        id: version
+        shell: pwsh
+        run: echo "value=$((Get-Content desktop/package.json -Raw | ConvertFrom-Json).version)" >> $env:GITHUB_OUTPUT
+      - name: Publish update
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.value }}
+          name: 생산계산기 v${{ steps.version.outputs.value }}
+          make_latest: true
+          files: |
+            desktop/dist/*.exe
+            desktop/dist/latest.yml
+            desktop/dist/*.blockmap
+
