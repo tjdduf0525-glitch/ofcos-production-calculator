@@ -29,6 +29,14 @@ jobs:
       - name: Build Windows installer
         working-directory: desktop
         run: npm run build
+      - name: Normalize update asset names
+        shell: pwsh
+        run: |
+          $version = (Get-Content desktop/package.json -Raw | ConvertFrom-Json).version
+          $exe = Get-ChildItem 'desktop/dist/*.exe' | Select-Object -First 1
+          $blockmap = Get-ChildItem 'desktop/dist/*.exe.blockmap' | Select-Object -First 1
+          Move-Item $exe.FullName "desktop/dist/production-calculator-setup-$version.exe" -Force
+          Move-Item $blockmap.FullName "desktop/dist/production-calculator-setup-$version.exe.blockmap" -Force
       - name: Read version
         id: version
         shell: pwsh
