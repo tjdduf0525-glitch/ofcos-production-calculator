@@ -1,6 +1,6 @@
 {
   "name": "production-calculator",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "생산 계산기 Windows 앱",
   "main": "main.js",
   "author": "OFCOS",
