@@ -1,0 +1,26 @@
+{
+  "name": "production-calculator-beginner",
+  "version": "1.0.0",
+  "description": "생산 계산기 초급자용 Windows 앱",
+  "main": "main.js",
+  "author": "OFCOS",
+  "license": "UNLICENSED",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "com.ofcos.productioncalculator.beginner.desktop",
+    "productName": "생산계산기 초급자용",
+    "files": ["main.js", "app/**/*"],
+    "npmRebuild": false,
+    "directories": {"output": "dist", "buildResources": "build"},
+    "afterPack": "after-pack.cjs",
+    "win": {"target": "nsis", "signAndEditExecutable": false, "artifactName": "생산계산기-초급자용-PC-${version}.exe"},
+    "nsis": {"oneClick": true, "perMachine": false, "createDesktopShortcut": "always", "createStartMenuShortcut": true, "shortcutName": "생산계산기 초급자용", "installerIcon": "build/app-icon.ico", "uninstallerIcon": "build/app-icon.ico"}
+  },
+  "scripts": {"build": "electron-builder --win nsis --x64 --publish never"},
+  "pnpm": {"onlyBuiltDependencies": ["electron"]}
+}
+
