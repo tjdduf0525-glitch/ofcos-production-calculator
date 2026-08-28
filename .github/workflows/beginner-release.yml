@@ -41,12 +41,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          Copy-Item 'beginner/desktop/dist/생산계산기-초급자용-PC-1.0.0.exe' 'beginner/production-calculator-beginner-PC-1.0.0.exe'
-          Copy-Item 'beginner/android/app/build/outputs/apk/debug/app-debug.apk' 'beginner/production-calculator-beginner-Android-1.0.0.apk'
+          Copy-Item 'beginner/desktop/dist/생산계산기-초급자용-PC-1.0.0.exe' 'beginner/초급자용-생산계산기-PC용.exe'
+          Copy-Item 'beginner/android/app/build/outputs/apk/debug/app-debug.apk' 'beginner/초급자용-생산계산기-갤럭시용.apk'
           $android=(1..8 | ForEach-Object { Get-Content "updates/android-v2.0.part$_.b64" -Raw }) -join ''
-          [IO.File]::WriteAllBytes('beginner/production-calculator-intermediate-Android-2.0.0.apk',[Convert]::FromBase64String($android))
+          [IO.File]::WriteAllBytes('beginner/중급자용-생산계산기-갤럭시용.apk',[Convert]::FromBase64String($android))
           gh release download v2.1.0 --pattern 'production-calculator-setup-2.1.0.exe' --dir beginner
-          Move-Item 'beginner/production-calculator-setup-2.1.0.exe' 'beginner/production-calculator-intermediate-PC-2.1.0.exe'
+          Move-Item 'beginner/production-calculator-setup-2.1.0.exe' 'beginner/중급자용-생산계산기-PC용.exe'
+          gh release delete downloads-current --yes --cleanup-tag 2>$null
+          if ($LASTEXITCODE -ne 0) { Write-Host '기존 통합 다운로드가 없어 새로 만듭니다.' }
       - name: Publish unified download page
         uses: softprops/action-gh-release@v2
         with:
@@ -55,13 +57,13 @@ jobs:
           make_latest: false
           body: |
             원하는 버전과 기기에 맞는 파일을 받으세요.
-            - intermediate: 중급자용
-            - beginner: 초급자용
-            - PC: Windows EXE
-            - Android: 갤럭시 APK
+            - 중급자용-생산계산기-PC용.exe: 중급자용 Windows
+            - 중급자용-생산계산기-갤럭시용.apk: 중급자용 갤럭시/안드로이드
+            - 초급자용-생산계산기-PC용.exe: 초급자용 Windows
+            - 초급자용-생산계산기-갤럭시용.apk: 초급자용 갤럭시/안드로이드
           files: |
-            beginner/production-calculator-intermediate-PC-2.1.0.exe
-            beginner/production-calculator-intermediate-Android-2.0.0.apk
-            beginner/production-calculator-beginner-PC-1.0.0.exe
-            beginner/production-calculator-beginner-Android-1.0.0.apk
+            beginner/중급자용-생산계산기-PC용.exe
+            beginner/중급자용-생산계산기-갤럭시용.apk
+            beginner/초급자용-생산계산기-PC용.exe
+            beginner/초급자용-생산계산기-갤럭시용.apk
 
