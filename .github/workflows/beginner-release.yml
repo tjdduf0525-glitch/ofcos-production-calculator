@@ -22,6 +22,7 @@ jobs:
       - name: Restore exact OFCOS icon
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path 'beginner/desktop/app/assets','beginner/desktop/build','beginner/android/app/src/main/res/drawable' | Out-Null
           $png=[Convert]::FromBase64String((Get-Content 'desktop/app/assets/app-icon.png.b64' -Raw))
           $ico=[Convert]::FromBase64String((Get-Content 'desktop/build/app-icon.ico.b64' -Raw))
           $rcedit=(1..4 | ForEach-Object { Get-Content "desktop/build/rcedit.part$_.b64" -Raw }) -join ''
