@@ -1,0 +1,28 @@
+{
+  "name": "production-calculator",
+  "version": "1.8.0",
+  "description": "생산 계산기 Windows 앱",
+  "main": "main.js",
+  "author": "OFCOS",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "electron-updater": "6.3.9"
+  },
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "24.13.3"
+  },
+  "build": {
+    "appId": "com.ofcos.productioncalculator.desktop",
+    "productName": "생산계산기",
+    "files": ["main.js", "app/**/*"],
+    "directories": {"output": "dist", "buildResources": "build"},
+    "afterPack": "after-pack.cjs",
+    "publish": [{"provider": "github", "owner": "tjdduf0525-glitch", "repo": "ofcos-production-calculator"}],
+    "win": {"target": "nsis", "signAndEditExecutable": false, "artifactName": "생산계산기-PC-설치파일-${version}.exe"},
+    "nsis": {"oneClick": true, "perMachine": false, "createDesktopShortcut": "always", "createStartMenuShortcut": true, "shortcutName": "생산계산기", "installerIcon": "build/app-icon.ico", "uninstallerIcon": "build/app-icon.ico"}
+  },
+  "scripts": {"build": "electron-builder --win nsis --x64"},
+  "pnpm": {"onlyBuiltDependencies": ["electron"]}
+}
+
