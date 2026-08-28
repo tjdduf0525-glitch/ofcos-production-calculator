@@ -10,8 +10,8 @@ exports.default = async function afterPack(context) {
     '--set-icon', icon,
     '--set-version-string', 'ProductName', '생산계산기',
     '--set-version-string', 'FileDescription', '생산계산기',
-    '--set-file-version', '1.9.0',
-    '--set-product-version', '1.9.0',
+    '--set-file-version', '2.0.0',
+    '--set-product-version', '2.0.0',
   ]);
 };
 
