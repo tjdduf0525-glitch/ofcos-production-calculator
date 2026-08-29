@@ -37,12 +37,13 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
         webView.loadUrl("file:///android_asset/index.html");
+        checkForUpdate();
     }
 
     private void checkForUpdate() {
         new Thread(() -> {
             try {
-                URL url = new URL("https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/android.json");
+                URL url = new URL("https://raw.githubusercontent.com/tjdduf0525-glitch/ofcos-production-calculator/main/updates/beginner-android.json");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestProperty("Accept", "application/vnd.github+json");
                 InputStream input = connection.getInputStream();
@@ -51,31 +52,26 @@ public class MainActivity extends Activity {
                 String latest = release.getString("version");
                 String current = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
                 if (!latest.equals(current)) {
-                    JSONArray apkParts = release.getJSONArray("apkParts");
+                    String downloadUrl = release.getString("downloadUrl");
                     runOnUiThread(() -> new AlertDialog.Builder(this)
                         .setTitle("생산계산기 업데이트")
                         .setMessage("새 버전이 있습니다. 지금 업데이트하시겠습니까?")
-                        .setPositiveButton("업데이트", (d, w) -> downloadUpdate(apkParts))
+                        .setPositiveButton("업데이트", (d, w) -> downloadUpdate(downloadUrl))
                         .setNegativeButton("나중에", null).show());
                 }
             } catch (Exception ignored) {}
         }).start();
     }
 
-    private void downloadUpdate(JSONArray apkParts) {
+    private void downloadUpdate(String downloadUrl) {
         File apk = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "production-calculator-update.apk");
         if (apk.exists()) apk.delete();
         new Thread(() -> {
             try {
-                StringBuilder encoded = new StringBuilder();
-                for (int i = 0; i < apkParts.length(); i++) {
-                    InputStream input = new URL(apkParts.getString(i)).openStream();
-                    encoded.append(new String(input.readAllBytes()).trim());
-                    input.close();
-                }
-                byte[] decoded = android.util.Base64.decode(encoded.toString(), android.util.Base64.DEFAULT);
+                InputStream input = new URL(downloadUrl).openStream();
                 FileOutputStream output = new FileOutputStream(apk);
-                output.write(decoded);
+                input.transferTo(output);
+                input.close();
                 output.close();
                 runOnUiThread(() -> {
                 Uri uri = FileProvider.getUriForFile(MainActivity.this, getPackageName() + ".fileprovider", apk);
