@@ -1,6 +1,6 @@
 {
   "name": "production-calculator-beginner",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "생산 계산기 초급자용 Windows 앱",
   "main": "main.js",
   "author": "OFCOS",
